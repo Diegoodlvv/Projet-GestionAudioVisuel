@@ -1,15 +1,15 @@
 <?php 
 
 require_once 'Media.php';
-require_once 'EnumMovie.php';
+require_once 'Enum/EnumMovie.php';
 
 class Movie extends Media{
     private float $duration;
     private EnumMovie $genre;
 
-    public function __construct(string $title, string $author, bool $disponible, float $duration, EnumMovie $genre)
+    public function __construct(int $id, string $title, string $author, bool $available, float $duration, EnumMovie $genre)
     {
-        parent::__construct($title, $author, $disponible);
+        parent::__construct($id, $title, $author, $available);
         $this->duration = $duration;
         $this->genre = $genre;
     }

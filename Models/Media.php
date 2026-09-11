@@ -1,15 +1,22 @@
 <?php 
 
 abstract class Media{
+    protected int $id;
     protected string $title;
     protected string $author;
-    protected bool $disponible;
+    protected bool $available;
+    const TABLE = "media";
 
-    public function __construct(string $title, string $author, bool $disponible)
+    public function __construct(int $id, string $title, string $author, bool $available)
     {
+        $this->id = $id;
         $this->title = $title;
         $this->author = $author;
-        $this->disponible = $disponible;
+        $this->available = $available;
+    }
+
+    public function getId(): int{
+        return $this->id;
     }
 
     public function getTitle(): string{
@@ -28,28 +35,37 @@ abstract class Media{
         $this->author = $author;
     }
 
-    public function isDisponible(): bool{
-        return $this->disponible;
+    public function isAvailable(): bool{
+        return $this->available;
     }
 
     public function emprunt(){
-        if($this->disponible == true){
+        if($this->available == true){
             echo "Vous avez emprunter le livre : " . $this->title;
 
-            $this->disponible = false;
+            $this->available = false;
         } else{
-            echo "Ce livre n'est pas disponible à l'emprunt";
+            echo "Ce livre n'est pas available à l'emprunt";
         }
     }
 
     public function giveBack(){
-        if($this->disponible == false){
+        if($this->available == false){
             echo "Vous avez rendu le livre : " . $this->title;
 
-            $this->disponible = true;
+            $this->available = true;
         } else {
             echo "Nous avons déjà ce livre dans notre médiathèque";
         }
     }
 
+    public function create(string $title, string $author, bool $available){
+        $db = connection();
+        $stmt = $db->prepare("INSERT INTO " . self::TABLE . " (title, author, available) VALUES (:title, :author, :available)");
+        $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+        $stmt->bindValue(':author', $author, PDO::PARAM_STR);
+        $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
+
+        $stmt->execute();
+    }
 }

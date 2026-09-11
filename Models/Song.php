@@ -4,11 +4,13 @@ class Song{
     private string $title;
     private int $note;
     private float $duration;
+    private Album $album;
 
-    public function __construct(string $title, int $note, float $duration){
+    public function __construct(string $title, int $note, float $duration, Album $album){
         $this->title = $title;
         $this->note = $note;
         $this->duration = $duration;
+        $this->album = $album;
     }
 
     public function getTitle(): string{

@@ -2,50 +2,29 @@
 
 class BookController{
 
-    function library()
+    static function library()
     {
-        $books = Book::getBooks();
-
         require_once ('views/book/library.php');
     }
 
-    function bookById(int $id){
-        $book = Book::getBookById($id);
+    static function create(){
+        if(isset($_POST['title']) && isset($_POST['author']) && isset($_POST['available']) && isset($_POST['pageNumber'])){
+            $title = $_POST['title'];
+            $author = $_POST['author'];
+            $available = $_POST['available'];
+            $pageNumber = $_POST['pageNumber'];
 
-        if(!$book){
-            $message = "Livre introuvable";
-        } else {
-            require_once ('views/book/' . $id);
+            if(!empty($title) && !empty($author) && !empty($pageNumber)){
+                $book = new Book(0, $title, $author, $available, $pageNumber);
+                $book->create($title, $author, $available);
+                echo "Le livre a été ajouté avec succès.";
+                require_once ('views/book/library.php');
+            } else {
+                echo "Veuillez remplir tous les champs."; 
+                require_once ('views/book/form.php');
+            }
+
         }
 
-        $books = Book::getBooks();
-        require_once ('views/book/library.php');
-    }
-
-    function update(int $id)
-    {
-        $book = Book::getBookById($id);
-
-        if(!$book){
-            $message = "Livre introuvable";
-        } else {
-            Book::update($book['id'], $book['title'], $book['author'], $book['disponible']);
-        }
-
-        $books = Book::getBooks();
-        require_once ('views/book/library.php');
-    }
-
-    function delete(int $id){
-        $book = Book::getBookById($id);
-        
-        if(!$book){
-            $message = "Livre introuvable";
-        } else {
-            Book::delete($id);
-        } 
-
-        $books = Book::getBooks();
-        require_once ('views/book/library.php');
     }
 }
