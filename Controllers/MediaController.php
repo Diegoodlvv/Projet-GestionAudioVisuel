@@ -1,14 +1,20 @@
 <?php 
 
+require_once 'Models/Media.php';
 require_once 'Models/Book.php';
 
-class BookController {
-    static function library() {
+class MediaController{
+
+    static function library()
+    {
+        $medias = Media::getMedias();
         $books = Book::getBooks();
-        require_once('views/book/library.php');
+        var_dump($books);
+
+        require_once('views/media/mediatheque.php');
     }
 
-    static function create() {
+    static function create(){
         if(isset($_POST['title']) && isset($_POST['author']) && isset($_POST['available']) && isset($_POST['pageNumber'])){
             $title = $_POST['title'];
             $author = $_POST['author'];

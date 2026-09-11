@@ -1,5 +1,7 @@
 <?php 
 
+require_once 'db_connect.php';
+
 abstract class Media{
     protected int $id;
     protected string $title;
@@ -59,7 +61,7 @@ abstract class Media{
         }
     }
 
-    public function create(string $title, string $author, bool $available){
+    public static function create(string $title, string $author, bool $available){
         $db = connection();
         $stmt = $db->prepare("INSERT INTO " . self::TABLE . " (title, author, available) VALUES (:title, :author, :available)");
         $stmt->bindValue(':title', $title, PDO::PARAM_STR);
@@ -68,4 +70,63 @@ abstract class Media{
 
         $stmt->execute();
     }
+
+    public static function getMedias(): array{
+        try {
+            $db = connection();
+            $stmt = $db->prepare("SELECT * FROM " . self::TABLE);
+            $stmt->execute();
+            $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $books;
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function getMediaById(int $id): ?array{
+        try {
+            $db = connection();
+            $stmt = $db->prepare("SELECT * FROM " . self::TABLE . " WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+            $stmt->execute();
+            $media = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $media;
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function updateMedia(int $id, string $title, string $author, bool $available): void{
+        try {
+            $db = connection();
+            $stmt = $db->prepare("UPDATE " . self::TABLE . " SET title = :title, author = :author, available = :available WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+            $stmt->bindValue(':author', $author, PDO::PARAM_STR);
+            $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
+
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function deleteMedia(int $id): void{
+        try {
+            $db = connection();
+            $stmt = $db->prepare("DELETE FROM " . self::TABLE . " WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    
+
 }
