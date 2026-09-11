@@ -32,7 +32,7 @@ abstract class Media{
         return $this->disponible;
     }
 
-    public function emprunter(){
+    public function emprunt(){
         if($this->disponible == true){
             echo "Vous avez emprunter le livre : " . $this->title;
 
@@ -42,7 +42,7 @@ abstract class Media{
         }
     }
 
-    public function rendre(){
+    public function giveBack(){
         if($this->disponible == false){
             echo "Vous avez rendu le livre : " . $this->title;
 
