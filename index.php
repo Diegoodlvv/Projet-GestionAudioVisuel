@@ -13,17 +13,25 @@ if(isset($_GET['action']) && !empty($_GET['action'])){
         if(file_exists($controllerFile)) {
             require_once($controllerFile);
 
-            if(function_exists($action)) {
-                if(isset($params[2]) && isset($params[3])){
-                    $action($params[2], $params[3]);
-                } else if (isset($params[2])) {
-                    $action($params[2]);
+            if (class_exists($controller . 'Controller')) {
+                $controllerClass = $controller . 'Controller';
+                $controllerObject = new $controllerClass();
+
+                if (method_exists($controllerObject, $action)) {
+
+                    if (isset($params[2]) && isset($params[3])) {
+                        $controllerObject->$action($params[2], $params[3]);
+                    } else if (isset($params[2])) {
+                        $controllerObject->$action($params[2]);
+                    } else {
+                        $controllerObject->$action();
+                    }
+
                 } else {
-                    $action();
+                    header('HTTP/1.0 404 Not Found');
+                    require_once('views/errors/404.html');
                 }
-            } else {
-                header('HTTP/1.0 404 Not Found');
-                require_once('views/errors/404.html');
+
             }
         } else {
             header('HTTP/1.0 404 Not Found');

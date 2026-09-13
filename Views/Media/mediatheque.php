@@ -1,6 +1,7 @@
 <?php 
 
 require_once 'header.php';
+require_once 'Controllers/BookController.php';
 
 ?>
 
@@ -22,17 +23,24 @@ require_once 'header.php';
 
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
-                <div class="border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600 p-6">
-                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
-                        📚
-                    </div>
+                <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600"> 
+                    <div class="p-6">
+                        <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
+                            📚
+                        </div>
 
-                    <h2 class="text-2xl font-bold text-white">
-                        Livres
-                    </h2>
-                    <p class="mt-1 text-sm text-indigo-100">
-                        Découvrez notre collection de livres
-                    </p>
+                        <h2 class="text-2xl font-bold text-white">
+                            Livres
+                        </h2>
+                        <p class="mt-1 text-sm text-indigo-100">
+                            Découvrez notre collection de livres
+                        </p>
+                    </div>
+                    <div class="p-6">
+                        <a href="index.php?action=Book/createBook" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5  text-sm font-semibold text-white transition hover:bg-indigo-700">
+                            Ajouter un livre
+                        </a>
+                    </div>
                 </div>
 
                 <div class="space-y-4 p-5">
@@ -82,8 +90,6 @@ require_once 'header.php';
                 </div>
             </section>
 
-
-            <!-- FILMS -->
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
                 <div class="border-b border-slate-100 bg-gradient-to-br from-rose-500 to-orange-500 p-6">
@@ -146,8 +152,6 @@ require_once 'header.php';
                 </div>
             </section>
 
-
-            <!-- ALBUMS -->
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
                 <div class="border-b border-slate-100 bg-gradient-to-br from-emerald-500 to-teal-500 p-6">

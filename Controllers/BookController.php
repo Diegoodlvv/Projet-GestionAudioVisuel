@@ -8,7 +8,7 @@ class BookController {
         require_once('views/book/library.php');
     }
 
-    static function create() {
+    function createBook() {
         if(isset($_POST['title']) && isset($_POST['author']) && isset($_POST['available']) && isset($_POST['pageNumber'])){
             $title = $_POST['title'];
             $author = $_POST['author'];
@@ -24,6 +24,8 @@ class BookController {
                 echo "Veuillez remplir tous les champs."; 
                 require_once ('views/book/form.php');
             }
+        } else {
+            require_once ('views/book/form.php');
         }
     }
 }

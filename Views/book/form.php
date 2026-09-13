@@ -5,7 +5,7 @@ require_once 'header.php';
 ?>
 
 <h1>Ajouter un livre</h1>
-<form  method="post">
+<form  method="post" action="index.php?action=Book/createBook">
     <label for="title">Titre :</label>
     <input type="text" id="title" name="title" required><br>
 
