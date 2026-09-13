@@ -70,4 +70,19 @@ class Book extends Media {
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
     }
+
+    public static function updateBook(string $title, string $author, bool $available, int $pageNumber, int $id): void {
+        try{
+            $connexion = connection();
+            Media::updateMedia($title, $author, $available, $id);
+            $query = "UPDATE " . self::TABLE . " SET page_number = :pageNumber WHERE id = :id";
+            $stmt = $connexion->prepare($query);
+            $stmt->bindValue(':pageNumber', $pageNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
 }

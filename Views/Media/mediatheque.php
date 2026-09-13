@@ -45,47 +45,43 @@ require_once 'Controllers/BookController.php';
 
                 <div class="space-y-4 p-5">
                     <?php foreach ($books as $book): ?>
-                        <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-indigo-200 hover:bg-indigo-50/50">
+                        <a href="index.php?action=Book/updateBook/<?= $book['id'] ?>" class="block">
+                            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-indigo-200 hover:bg-indigo-50/50">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <h3 class="font-semibold text-slate-900">
+                                            <?= htmlspecialchars($book['title']) ?>
+                                        </h3>
+                                        <p class="mt-1 text-sm text-slate-500">
+                                            <?= htmlspecialchars($book['author']) ?>
+                                        </p>
+                                    </div>
 
-                            <div class="flex items-start justify-between gap-3">
-                                <div>
-                                    <h3 class="font-semibold text-slate-900">
-                                        <?= htmlspecialchars($book['title']) ?>
-                                    </h3>
-
-                                    <p class="mt-1 text-sm text-slate-500">
-                                        <?= htmlspecialchars($book['author']) ?>
-                                    </p>
+                                    <?php if ($book['available']): ?>
+                                        <span class="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
+                                            Disponible
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="shrink-0 rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                            Indisponible
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
 
                                 <?php if ($book['available']): ?>
-                                    <span class="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
-                                        Disponible
-                                    </span>
+                                    <a href="index.php?action=emprunter&id=<?= $book['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        Emprunter
+                                    </a>
                                 <?php else: ?>
-                                    <span class="shrink-0 rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                    <button
+                                        disabled
+                                        class="mt-4 w-full cursor-not-allowed rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400"
+                                    >
                                         Indisponible
-                                    </span>
+                                    </button>
                                 <?php endif; ?>
                             </div>
-
-                            <?php if ($book['available']): ?>
-                                <a
-                                    href="index.php?action=emprunter&id=<?= $book['id'] ?>"
-                                    class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
-                                >
-                                    Emprunter
-                                </a>
-                            <?php else: ?>
-                                <button
-                                    disabled
-                                    class="mt-4 w-full cursor-not-allowed rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400"
-                                >
-                                    Indisponible
-                                </button>
-                            <?php endif; ?>
-
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 </div>
             </section>

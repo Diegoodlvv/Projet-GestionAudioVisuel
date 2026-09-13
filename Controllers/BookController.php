@@ -28,4 +28,14 @@ class BookController {
             require_once ('views/book/form.php');
         }
     }
+
+    function updateBook(int $id) {
+        $book = Book::getBookById($id);
+        if ($book) {
+            $bookInfos = Media::getMediaById($book['media_id']);
+            require_once('views/book/form.php');
+        } else {
+            echo "Livre introuvable.";
+        }
+    }
 }
