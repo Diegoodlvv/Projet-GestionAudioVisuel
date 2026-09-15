@@ -1,6 +1,7 @@
 <?php 
 
 require_once 'Models/Book.php';
+require_once 'Controllers/MediaController.php';
 
 class BookController {
     static function library() {
@@ -17,9 +18,10 @@ class BookController {
 
             if(!empty($title) && !empty($author) && !empty($pageNumber)){
                 $book = new Book(0, $title, $author, $available, $pageNumber);
-                $book->create($title, $author, $available);
+                $book::createBook($title, $author, $available, $pageNumber);
                 echo "Le livre a été ajouté avec succès.";
-                require_once ('views/book/library.php');
+                MediaController::library();
+                require_once ('views/media/mediatheque.php');
             } else {
                 echo "Veuillez remplir tous les champs."; 
                 require_once ('views/book/form.php');

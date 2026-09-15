@@ -57,13 +57,17 @@ class Book extends Media {
         }
     }
 
-    public static function createBook(string $title, string $author, bool $available, int $pageNumber): void {
-        try{
+    public static function createBook( string $title, string $author, bool $available, int $pageNumber): void {
+        try {
             $connexion = connection();
-            Media::create($title, $author, $available);
-            $query = "INSERT INTO " . self::TABLE . " (id, page_number) VALUES (LAST_INSERT_ID(), :pageNumber)";
+
+            $mediaId = Media::create($title, $author, $available);
+
+            $query = "INSERT INTO " . self::TABLE . " (pageNumber, media_id) VALUES (:pageNumber, :media_id)";
+
             $stmt = $connexion->prepare($query);
             $stmt->bindValue(':pageNumber', $pageNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':media_id', $mediaId, PDO::PARAM_INT);
             $stmt->execute();
 
         } catch (PDOException $e) {

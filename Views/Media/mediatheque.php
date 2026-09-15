@@ -100,6 +100,25 @@ require_once 'Controllers/BookController.php';
                         Retrouvez vos films préférés
                     </p>
                 </div>
+                <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600"> 
+                    <div class="p-6">
+                        <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
+                            🎬
+                        </div>
+
+                        <h2 class="text-2xl font-bold text-white">
+                            Films
+                        </h2>
+                        <p class="mt-1 text-sm text-indigo-100">
+                            Retrouvez vos films préférés
+                        </p>
+                    </div>
+                    <div class="p-6">
+                        <a href="index.php?action=Movie/createMovie" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5  text-sm font-semibold text-white transition hover:bg-indigo-700">
+                            Ajouter un film
+                        </a>
+                    </div>
+                </div>
 
                 <div class="space-y-4 p-5">
                     <?php foreach ($movies as $movie): ?>

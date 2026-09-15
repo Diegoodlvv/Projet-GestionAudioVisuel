@@ -61,14 +61,20 @@ abstract class Media{
         }
     }
 
-    public static function create(string $title, string $author, bool $available){
-        $db = connection();
-        $stmt = $db->prepare("INSERT INTO " . self::TABLE . " (title, author, available) VALUES (:title, :author, :available)");
-        $stmt->bindValue(':title', $title, PDO::PARAM_STR);
-        $stmt->bindValue(':author', $author, PDO::PARAM_STR);
+    public static function create(string $title, string $author, bool $available): int
+    {
+        $connexion = connection();
+
+        $query = "INSERT INTO media (title, author, available) VALUES (:title, :author, :available)";
+
+        $stmt = $connexion->prepare($query);
+        $stmt->bindValue(':title', $title);
+        $stmt->bindValue(':author', $author);
         $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
 
         $stmt->execute();
+
+        return (int) $connexion->lastInsertId();
     }
 
     public static function getMedias(): array{
