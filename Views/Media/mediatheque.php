@@ -87,19 +87,6 @@ require_once 'Controllers/BookController.php';
             </section>
 
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-
-                <div class="border-b border-slate-100 bg-gradient-to-br from-rose-500 to-orange-500 p-6">
-                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
-                        🎬
-                    </div>
-
-                    <h2 class="text-2xl font-bold text-white">
-                        Films
-                    </h2>
-                    <p class="mt-1 text-sm text-rose-100">
-                        Retrouvez vos films préférés
-                    </p>
-                </div>
                 <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600"> 
                     <div class="p-6">
                         <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
@@ -122,47 +109,48 @@ require_once 'Controllers/BookController.php';
 
                 <div class="space-y-4 p-5">
                     <?php foreach ($movies as $movie): ?>
-                        <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-rose-200 hover:bg-rose-50/50">
+                        <a href="index.php?action=Movie/UpdateMovie/<?= $movie['id'] ?>" class="block">
+                            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-rose-200 hover:bg-rose-50/50">
 
-                            <div class="flex items-start justify-between gap-3">
-                                <div>
-                                    <h3 class="font-semibold text-slate-900">
-                                        <?= htmlspecialchars($movie['title']) ?>
-                                    </h3>
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <h3 class="font-semibold text-slate-900">
+                                            <?= htmlspecialchars($movie['title']) ?>
+                                        </h3>
 
-                                    <p class="mt-1 text-sm text-slate-500">
-                                        <?= htmlspecialchars($movie['author']) ?>
-                                    </p>
+                                        <p class="mt-1 text-sm text-slate-500">
+                                            <?= htmlspecialchars($movie['author']) ?>
+                                        </p>
+                                    </div>
+
+                                    <?php if ($movie['available']): ?>
+                                        <span class="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
+                                            Disponible
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="shrink-0 rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                            Indisponible
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
 
                                 <?php if ($movie['available']): ?>
-                                    <span class="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
-                                        Disponible
-                                    </span>
+                                    <a
+                                        href="index.php?action=emprunter&id=<?= $movie['id'] ?>"
+                                        class="mt-4 flex w-full items-center justify-center rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
+                                    >
+                                        Emprunter
+                                    </a>
                                 <?php else: ?>
-                                    <span class="shrink-0 rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                    <button
+                                        disabled
+                                        class="mt-4 w-full cursor-not-allowed rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400"
+                                    >
                                         Indisponible
-                                    </span>
+                                    </button>
                                 <?php endif; ?>
                             </div>
-
-                            <?php if ($movie['available']): ?>
-                                <a
-                                    href="index.php?action=emprunter&id=<?= $movie['id'] ?>"
-                                    class="mt-4 flex w-full items-center justify-center rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
-                                >
-                                    Emprunter
-                                </a>
-                            <?php else: ?>
-                                <button
-                                    disabled
-                                    class="mt-4 w-full cursor-not-allowed rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400"
-                                >
-                                    Indisponible
-                                </button>
-                            <?php endif; ?>
-
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 </div>
             </section>

@@ -78,7 +78,7 @@ class Book extends Media {
     public static function updateBook(string $title, string $author, bool $available, int $pageNumber, int $id): void {
         try{
             $connexion = connection();
-            Media::updateMedia($title, $author, $available, $id);
+            Media::updateMedia($id, $title, $author, $available);
             $query = "UPDATE " . self::TABLE . " SET page_number = :pageNumber WHERE id = :id";
             $stmt = $connexion->prepare($query);
             $stmt->bindValue(':pageNumber', $pageNumber, PDO::PARAM_INT);
