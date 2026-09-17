@@ -70,4 +70,26 @@ class BookController {
         MediaController::library();
         require_once ('views/media/mediatheque.php');
     }
+
+    function emprunterBook(int $id) {
+        try {
+            Book::emprunter($id);
+            echo "Vous avez emprunté ce livre.";
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        MediaController::library();
+        require_once('views/media/mediatheque.php');
+    }
+
+    function rendreBook(int $id) {
+        try {
+            Book::rendre($id);
+            echo "Vous avez rendu ce livre.";
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        MediaController::library();
+        require_once('views/media/mediatheque.php');
+    }
 }

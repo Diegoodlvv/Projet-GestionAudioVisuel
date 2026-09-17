@@ -71,4 +71,26 @@ class movieController {
         MediaController::library();
         require_once ('views/media/mediatheque.php');
     }
+
+    function emprunterMovie(int $id) {
+        try {
+            Movie::emprunter($id);
+            echo "Vous avez emprunté ce film.";
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        MediaController::library();
+        require_once('views/media/mediatheque.php');
+    }
+
+    function rendreMovie(int $id) {
+        try {
+            Movie::rendre($id);
+            echo "Vous avez rendu ce film.";
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        MediaController::library();
+        require_once('views/media/mediatheque.php');
+    }
 }

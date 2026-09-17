@@ -107,4 +107,32 @@ class Book extends Media {
         }
     }
 
+    public static function emprunter(int $id): void {
+        $media = Media::getMediaById($id);
+
+        if (!$media) {
+            throw new Exception("Livre introuvable.");
+        }
+
+        if (!$media['available']) {
+            throw new Exception("Ce livre n'est pas disponible à l'emprunt.");
+        }
+
+        Media::updateAvailability($id, false);
+    }
+
+    public static function rendre(int $id): void {
+        $media = Media::getMediaById($id);
+
+        if (!$media) {
+            throw new Exception("Livre introuvable.");
+        }
+
+        if ($media['available']) {
+            throw new Exception("Ce livre est déjà disponible.");
+        }
+
+        Media::updateAvailability($id, true);
+    }
+
 }

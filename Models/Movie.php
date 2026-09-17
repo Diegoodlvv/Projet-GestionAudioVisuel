@@ -121,4 +121,32 @@ class Movie extends Media{
         }
     }
 
+    public static function emprunter(int $id): void {
+        $media = Media::getMediaById($id);
+
+        if (!$media) {
+            throw new Exception("Film introuvable.");
+        }
+
+        if (!$media['available']) {
+            throw new Exception("Ce film n'est pas disponible à l'emprunt.");
+        }
+
+        Media::updateAvailability($id, false);
+    }
+
+    public static function rendre(int $id): void {
+        $media = Media::getMediaById($id);
+
+        if (!$media) {
+            throw new Exception("Film introuvable.");
+        }
+
+        if ($media['available']) {
+            throw new Exception("Ce film est déjà disponible.");
+        }
+
+        Media::updateAvailability($id, true);
+    }
+
 }

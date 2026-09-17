@@ -132,4 +132,17 @@ abstract class Media{
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
     }
+
+    public static function updateAvailability(int $id, bool $available): void {
+    try {
+        $db = connection();
+        $stmt = $db->prepare("UPDATE " . self::TABLE . " SET available = :available WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
+        $stmt->execute();
+        
+    } catch (PDOException $e) {
+        throw new Exception("Erreur de requête : " . $e->getMessage());
+    }
+}
 }

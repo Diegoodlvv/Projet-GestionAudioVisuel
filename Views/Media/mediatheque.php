@@ -69,11 +69,11 @@ require_once 'Controllers/BookController.php';
                                 </div>
                                 <div class="flex gap-2">
                                     <?php if ($book['available']): ?>
-                                        <a href="index.php?action=Book/emprunterBook/&id=<?= $book['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        <a href="index.php?action=Book/emprunterBook/<?= $book['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
                                             Emprunter
                                         </a>
                                     <?php else: ?>
-                                        <a href="index.php?action=Book/rendreBook/&id=<?= $book['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        <a href="index.php?action=Book/rendreBook/<?= $book['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
                                             Rendre
                                         </a>
                                     <?php endif; ?>
@@ -89,7 +89,7 @@ require_once 'Controllers/BookController.php';
             </section>
 
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600"> 
+                <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-rose-600 to-rose-500"> 
                     <div class="p-6">
                         <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
                             🎬
@@ -138,11 +138,11 @@ require_once 'Controllers/BookController.php';
 
                                 <div class="flex gap-2">
                                     <?php if ($movie['available']): ?>
-                                        <a href="index.php?action=emprunter&id=<?= $movie['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        <a href="index.php?action=Movie/emprunterMovie/<?= $movie['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
                                             Emprunter
                                         </a>
                                     <?php else: ?>
-                                        <a href="index.php?action=rendre&id=<?= $movie['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        <a href="index.php?action=Movie/rendreMovie/<?= $movie['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
                                             Rendre
                                         </a>
                                     <?php endif; ?>
@@ -159,7 +159,7 @@ require_once 'Controllers/BookController.php';
 
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
-                <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600"> 
+                <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-emerald-600 to-emerald-500"> 
                     <div class="p-6">
                         <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
                             🎵
@@ -207,11 +207,11 @@ require_once 'Controllers/BookController.php';
 
                                 <div class="flex gap-2">
                                     <?php if ($album['available']): ?>
-                                        <a href="index.php?action=emprunter&id=<?= $album['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        <a href="index.php?action=Album/emprunterAlbum/<?= $album['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
                                             Emprunter
                                         </a>
                                     <?php else: ?>
-                                        <a href="index.php?action=rendre&id=<?= $album['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                                        <a href="index.php?action=Album/rendreAlbum/<?= $album['id'] ?>" class="mt-4 flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
                                             Rendre
                                         </a>
                                     <?php endif; ?>

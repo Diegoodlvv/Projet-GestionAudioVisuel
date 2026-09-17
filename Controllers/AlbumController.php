@@ -72,4 +72,26 @@ class albumController {
         MediaController::library();
         require_once ('views/media/mediatheque.php');
     }
+
+    function emprunterAlbum(int $id) {
+        try {
+            Album::emprunter($id);
+            echo "Vous avez emprunté cet album.";
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        MediaController::library();
+        require_once('views/media/mediatheque.php');
+    }
+
+    function rendreAlbum(int $id) {
+        try {
+            Album::rendre($id);
+            echo "Vous avez rendu cet album.";
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        MediaController::library();
+        require_once('views/media/mediatheque.php');
+    }
 }
