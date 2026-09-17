@@ -51,4 +51,72 @@ class Album extends Media{
         }
     }
 
+    public static function getAlbumById(int $id): ?array {
+        try{
+            $connexion = connection();
+            $query = "SELECT * FROM " . self::TABLE . " WHERE media_id = :id";
+            $stmt = $connexion->prepare($query);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $album = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $album;
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function createAlbum( string $title, string $author, bool $available, int $trackNumber, string $editor): void {
+        try {
+            $connexion = connection();
+
+            $mediaId = Media::create($title, $author, $available);
+
+            $query = "INSERT INTO " . self::TABLE . " (trackNumber, editor, media_id) VALUES (:trackNumber, :editor, :media_id)";
+
+            $stmt = $connexion->prepare($query);
+            $stmt->bindValue(':trackNumber', $trackNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':editor', $editor, PDO::PARAM_STR);
+            $stmt->bindValue(':media_id', $mediaId, PDO::PARAM_INT);
+            $stmt->execute();
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function updateAlbum(string $title, string $author, bool $available, int $trackNumber, string $editor, int $id): void {
+        try{
+            $connexion = connection();
+            Media::updateMedia($id, $title, $author, $available);
+            $query = "UPDATE " . self::TABLE . " SET trackNumber = :trackNumber, editor = :editor WHERE media_id = :id";
+            $stmt = $connexion->prepare($query);
+            $stmt->bindValue(':trackNumber', $trackNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':editor', $editor, PDO::PARAM_INT);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function deleteAlbum(int $id): void
+    {
+        try {
+            $db = connection();
+
+            $stmt = $db->prepare('DELETE FROM ' . self::TABLE . ' WHERE media_id = :id');
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            Media::deleteMedia($id);
+
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
 }

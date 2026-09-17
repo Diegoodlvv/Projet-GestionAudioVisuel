@@ -29,8 +29,6 @@ class movieController {
                 require_once ('views/movie/form.php');
             }
         } else {
-            echo "KO";
-            var_dump($_POST);
             require_once ('views/movie/form.php');
         }
     }
@@ -42,7 +40,6 @@ class movieController {
             echo "Film introuvable.";
             return;
         }
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $title = $_POST['title'];
@@ -61,5 +58,17 @@ class movieController {
 
         $movieInfos = Media::getMediaById($movie['media_id']);
         require_once('views/movie/form.php');
+    }
+
+    function deleteMovie(int $id){
+        $movie = Movie::getMovieById($id);
+        if(!$movie){
+            $message = "Livre introuvable";
+        } else {
+            Movie::deleteMovie($id);
+            echo "Suppression réussie";
+        }
+        MediaController::library();
+        require_once ('views/media/mediatheque.php');
     }
 }

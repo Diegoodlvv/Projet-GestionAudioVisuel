@@ -132,7 +132,4 @@ abstract class Media{
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
     }
-
-    
-
 }

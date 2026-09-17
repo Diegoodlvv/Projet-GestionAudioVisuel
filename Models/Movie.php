@@ -56,7 +56,7 @@ class Movie extends Media{
     public static function getMovieById(int $id): ?array {
         try{
             $connexion = connection();
-            $query = "SELECT * FROM " . self::TABLE . " WHERE id = :id";
+            $query = "SELECT * FROM " . self::TABLE . " WHERE media_id = :id";
             $stmt = $connexion->prepare($query);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -99,6 +99,23 @@ class Movie extends Media{
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function deleteMovie(int $id): void
+    {
+        try {
+            $db = connection();
+
+            $stmt = $db->prepare('DELETE FROM ' . self::TABLE . ' WHERE media_id = :id');
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            Media::deleteMedia($id);
+
+
         } catch (PDOException $e) {
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }

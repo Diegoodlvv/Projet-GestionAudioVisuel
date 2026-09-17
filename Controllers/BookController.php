@@ -33,11 +33,41 @@ class BookController {
 
     function updateBook(int $id) {
         $book = Book::getBookById($id);
-        if ($book) {
-            $bookInfos = Media::getMediaById($book['media_id']);
-            require_once('views/book/form.php');
-        } else {
+
+        if (!$book) {
             echo "Livre introuvable.";
+            return;
         }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $title = $_POST['title'];
+            $author = $_POST['author'];
+            $available = isset($_POST['available']);
+            $pageNumber = $_POST['pageNumber'];
+
+            Book::updateBook($title, $author, $available, $pageNumber, $id);
+
+            echo "Le livre a bien été modifié";
+            MediaController::library();
+            require_once('views/media/mediatheque.php');
+            return;
+        }
+
+        $bookInfos = Media::getMediaById($book['media_id']);
+        require_once('views/Book/form.php');
+    }
+
+
+    function deleteBook(int $id){
+        $book = Book::getBookById($id);
+        if(!$book){
+            $message = "Livre introuvable";
+        } else {
+            Book::deleteBook($id);
+            echo "Suppression réussie";
+        }
+        MediaController::library();
+        require_once ('views/media/mediatheque.php');
     }
 }
