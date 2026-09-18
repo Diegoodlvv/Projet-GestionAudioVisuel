@@ -21,7 +21,7 @@ require_once 'Controllers/BookController.php';
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
-            <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <section id="livres" class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
                 <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-indigo-500 to-violet-600"> 
                     <div class="p-6">
@@ -88,7 +88,7 @@ require_once 'Controllers/BookController.php';
                 </div>
             </section>
 
-            <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <section id="films" class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-rose-600 to-rose-500"> 
                     <div class="p-6">
                         <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl backdrop-blur">
@@ -157,7 +157,7 @@ require_once 'Controllers/BookController.php';
                 </div>
             </section>
 
-            <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <section id="albums" class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
                 <div class="flex items-center justify-between  border-b border-slate-100 bg-gradient-to-br from-emerald-600 to-emerald-500"> 
                     <div class="p-6">
