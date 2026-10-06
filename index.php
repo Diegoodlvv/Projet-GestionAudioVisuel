@@ -4,7 +4,6 @@ session_start();
  
 $currentAction = isset($_GET['action']) ? $_GET['action'] : '';
  
-// Pages accessibles sans être connecté
 $publicActions = ['User/register', 'User/login'];
  
 $isPublicAction = false;
@@ -58,5 +57,5 @@ if(isset($_GET['action']) && !empty($_GET['action'])){
     }
 } else {
     require_once('Controllers/MediaController.php');
-    MediaController::library(); 
+    MediaController::home(); 
 }

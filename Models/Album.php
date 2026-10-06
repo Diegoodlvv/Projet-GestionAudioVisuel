@@ -67,11 +67,11 @@ class Album extends Media{
         }
     }
 
-    public static function createAlbum( string $title, string $author, bool $available, int $trackNumber, string $editor): void {
+    public static function createAlbum( string $title, string $author, bool $available, int $fileId, int $trackNumber, string $editor): int {
         try {
             $connexion = connection();
 
-            $mediaId = Media::create($title, $author, $available);
+            $mediaId = Media::create($title, $author, $available, $fileId);
 
             $query = "INSERT INTO " . self::TABLE . " (trackNumber, editor, media_id) VALUES (:trackNumber, :editor, :media_id)";
 
@@ -81,19 +81,21 @@ class Album extends Media{
             $stmt->bindValue(':media_id', $mediaId, PDO::PARAM_INT);
             $stmt->execute();
 
+            return $mediaId;
+
         } catch (PDOException $e) {
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
     }
 
-    public static function updateAlbum(string $title, string $author, bool $available, int $trackNumber, string $editor, int $id): void {
+    public static function updateAlbum(string $title, string $author, bool $available, int $fileId, int $trackNumber, string $editor, int $id): void {
         try{
             $connexion = connection();
-            Media::updateMedia($id, $title, $author, $available);
+            Media::updateMedia($id, $title, $author, $available, $fileId);
             $query = "UPDATE " . self::TABLE . " SET trackNumber = :trackNumber, editor = :editor WHERE media_id = :id";
             $stmt = $connexion->prepare($query);
             $stmt->bindValue(':trackNumber', $trackNumber, PDO::PARAM_INT);
-            $stmt->bindValue(':editor', $editor, PDO::PARAM_INT);
+            $stmt->bindValue(':editor', $editor, PDO::PARAM_STR);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             

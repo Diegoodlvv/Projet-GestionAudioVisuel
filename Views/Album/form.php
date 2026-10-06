@@ -16,7 +16,7 @@ require_once 'header.php';
             </h1>
         </div>
 
-        <form method="post"
+        <form method="post" enctype="multipart/form-data"
               class="space-y-5 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
               action="<?= isset($album)
                     ? 'index.php?action=Album/updateAlbum/' . $albumInfos['id']
@@ -48,6 +48,18 @@ require_once 'header.php';
                 <input type="text" id="editor" name="editor" required
                        value="<?= isset($album) ? htmlspecialchars($album['editor']) : '' ?>"
                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:bg-white focus:ring-2 focus:ring-emerald-100">
+            </div>
+
+            <?php if (isset($currentFile)): ?>
+                <div> 
+                    <p class="mb-1.5 block text-sm font-medium text-slate-700">Illustration actuelle :</p>
+                    <img src="uploads/<?= htmlspecialchars($currentFile['stored_name']) ?>" alt="Illustration actuelle" class="max-w-full h-auto rounded-lg">
+                </div>
+            <?php endif; ?>
+            <div>
+                <label for="illustration" class="mb-1.5 block text-sm font-medium text-slate-700">Illustration :</label>
+                <input type="file" value=" id="illustration" name="illustration" accept="image/*" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-rose-400 focus:bg-white focus:ring-2 focus:ring-rose-100"> 
+                <small class="text-slate-500">Formats acceptés : JPG, PNG, GIF. Taille maximale : 5 Mo.</small>
             </div>
 
             <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">

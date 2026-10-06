@@ -9,11 +9,20 @@ class MediaController{
 
     static function library()
     {
-        $medias = Media::getMedias();
         $books = Book::getBooks();
         $movies = Movie::getMovies();
         $albums = Album::getAlbums();
 
         require_once('views/media/mediatheque.php');
+    }
+
+    static function home()
+    {
+        $medias = Media::getMedias();
+        $totalMedias = Media::getTotalMedias();
+        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+        $pages = ceil($totalMedias);
+
+        require_once('views/media/home.php');
     }
 }

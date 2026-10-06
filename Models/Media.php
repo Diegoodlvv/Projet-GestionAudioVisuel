@@ -61,16 +61,17 @@ abstract class Media{
         }
     }
 
-    public static function create(string $title, string $author, bool $available): int
+    public static function create(string $title, string $author, bool $available, int $fileId): int
     {
         $connexion = connection();
 
-        $query = "INSERT INTO media (title, author, available) VALUES (:title, :author, :available)";
+        $query = "INSERT INTO media (title, author, available, file_id) VALUES (:title, :author, :available, :file_id)";
 
         $stmt = $connexion->prepare($query);
         $stmt->bindValue(':title', $title);
         $stmt->bindValue(':author', $author);
         $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
+        $stmt->bindValue(':file_id', $fileId, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -78,13 +79,34 @@ abstract class Media{
     }
 
     public static function getMedias(): array{
+
+        $page = $_GET['page'] ?? 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
         try {
             $db = connection();
-            $stmt = $db->prepare("SELECT * FROM " . self::TABLE);
+            $stmt = $db->prepare("SELECT * FROM " . self::TABLE . " LIMIT :limit OFFSET :offset");
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
-            $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $medias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return $books;
+            return $medias;
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
+    }
+
+    public static function getTotalMedias(): int {
+        try {
+            $db = connection();
+            $stmt = $db->prepare("SELECT COUNT(*) as total FROM " . self::TABLE);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int) $result['total'];
         } catch (PDOException $e) {
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
@@ -106,14 +128,15 @@ abstract class Media{
         }
     }
 
-    public static function updateMedia(int $id, string $title, string $author, bool $available): void{
+    public static function updateMedia(int $id, string $title, string $author, bool $available, int $fileId): void{
         try {
             $db = connection();
-            $stmt = $db->prepare("UPDATE " . self::TABLE . " SET title = :title, author = :author, available = :available WHERE id = :id");
+            $stmt = $db->prepare("UPDATE " . self::TABLE . " SET title = :title, author = :author, available = :available, file_id = :file_id WHERE id = :id");
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->bindValue(':title', $title, PDO::PARAM_STR);
             $stmt->bindValue(':author', $author, PDO::PARAM_STR);
             $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
+            $stmt->bindValue(':file_id', $fileId, PDO::PARAM_INT);
 
             $stmt->execute();
         } catch (PDOException $e) {

@@ -3,6 +3,7 @@
 require_once 'Media.php';
 require_once 'db_connect.php';
 require_once 'Enum/EnumMovie.php';
+require_once 'File.php';
 
 class Movie extends Media{
     private float $duration;
@@ -69,11 +70,11 @@ class Movie extends Media{
         }
     }
 
-    public static function createMovie(string $title, string $author, bool $available,float $duration, EnumMovie $genre): void {
+    public static function createMovie(string $title, string $author, bool $available, int $fileId, float $duration, EnumMovie $genre): int {
         try {
             $connexion = connection();
 
-            $mediaId = Media::create($title, $author, $available);
+            $mediaId = Media::create($title, $author, $available, $fileId);
 
             $query = "INSERT INTO " . self::TABLE . " (duration, genre, media_id) VALUES (:duration, :genre, :media_id)";
 
@@ -83,18 +84,20 @@ class Movie extends Media{
             $stmt->bindValue(':media_id', $mediaId, PDO::PARAM_INT);
             $stmt->execute();
 
+            return $mediaId;
+
         } catch (PDOException $e) {
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
     }
 
-    public static function updateMovie(string $title, string $author, bool $available, float $duration, EnumMovie $genre, int $id): void {
+    public static function updateMovie(string $title, string $author, bool $available, int $fileId, float $duration, EnumMovie $genre, int $id): void {
         try{
             $connexion = connection();
-            Media::updateMedia($id, $title, $author, $available);
+            Media::updateMedia($id, $title, $author, $available, $fileId);
             $query = "UPDATE " . self::TABLE . " SET duration = :duration, genre = :genre WHERE id = :id";
             $stmt = $connexion->prepare($query);
-            $stmt->bindValue(':duration', $duration,  PDO::PARAM_INT);
+            $stmt->bindValue(':duration', $duration);
             $stmt->bindValue(':genre', $genre->value);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->execute();

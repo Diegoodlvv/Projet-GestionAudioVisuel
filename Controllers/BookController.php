@@ -2,6 +2,8 @@
 
 require_once 'Models/Book.php';
 require_once 'Controllers/MediaController.php';
+require_once 'Services/FileService.php';
+require_once 'Models/File.php';
 
 class BookController {
     static function library() {
@@ -10,15 +12,26 @@ class BookController {
     }
 
     function createBook() {
-        if(isset($_POST['title']) && isset($_POST['author']) && isset($_POST['available']) && isset($_POST['pageNumber'])){
+        if(isset($_POST['title']) && isset($_POST['author']) && isset($_POST['pageNumber'])){
             $title = $_POST['title'];
             $author = $_POST['author'];
-            $available = $_POST['available'];
+            $available = isset($_POST['available']) ? 1 : 0;
             $pageNumber = $_POST['pageNumber'];
 
+            if (isset($_FILES['illustration']) && $_FILES['illustration']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $fileId = FileService::uploadIllustration(
+                    $_FILES['illustration'],
+                    $_SESSION['user_id']
+                );
+            } else {
+                echo "Aucun fichier téléchargé.";
+
+                require_once ('views/book/form.php');
+            }
+
             if(!empty($title) && !empty($author) && !empty($pageNumber)){
-                $book = new Book(0, $title, $author, $available, $pageNumber);
-                $book::createBook($title, $author, $available, $pageNumber);
+                $bookId = Book::createBook($title, $author, $available, $fileId, $pageNumber);
+
                 echo "Le livre a été ajouté avec succès.";
                 MediaController::library();
                 require_once ('views/media/mediatheque.php');
@@ -39,6 +52,21 @@ class BookController {
             return;
         }
 
+        $bookInfos = Media::getMediaById($book['media_id']);
+        $fileId = $bookInfos['file_id'] ?? null;
+        $currentFile = File::getFileById($fileId);
+        var_dump($currentFile);
+
+        $maxPostSize = ini_get('post_max_size');
+        $maxPost = File::toBytes($maxPostSize);
+
+        if(isset($_SERVER["CONTENT_LENGTH"]) && $_SERVER["CONTENT_LENGTH"] > $maxPost){
+            echo "fichier trop volumineux";
+            MediaController::library();
+            require_once('views/media/mediatheque.php');
+            return;
+        } 
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $title = $_POST['title'];
@@ -46,7 +74,15 @@ class BookController {
             $available = isset($_POST['available']);
             $pageNumber = $_POST['pageNumber'];
 
-            Book::updateBook($title, $author, $available, $pageNumber, $id);
+            Book::updateBook($title, $author, $available, $fileId, $pageNumber, $id);
+
+            if (isset($_FILES['illustration']) && $_FILES['illustration']['error'] !== UPLOAD_ERR_NO_FILE ) 
+            {
+                FileService::uploadIllustration(
+                    $_FILES['illustration'],
+                    $_SESSION['user_id']
+                );
+            }
 
             echo "Le livre a bien été modifié";
             MediaController::library();
@@ -54,7 +90,6 @@ class BookController {
             return;
         }
 
-        $bookInfos = Media::getMediaById($book['media_id']);
         require_once('views/Book/form.php');
     }
 

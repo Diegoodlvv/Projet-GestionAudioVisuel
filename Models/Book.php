@@ -57,11 +57,11 @@ class Book extends Media {
         }
     }
 
-    public static function createBook( string $title, string $author, bool $available, int $pageNumber): void {
+    public static function createBook( string $title, string $author, bool $available, int $fileId, int $pageNumber): int {
         try {
             $connexion = connection();
 
-            $mediaId = Media::create($title, $author, $available);
+            $mediaId = Media::create($title, $author, $available, $fileId);
 
             $query = "INSERT INTO " . self::TABLE . " (pageNumber, media_id) VALUES (:pageNumber, :media_id)";
 
@@ -70,15 +70,17 @@ class Book extends Media {
             $stmt->bindValue(':media_id', $mediaId, PDO::PARAM_INT);
             $stmt->execute();
 
+            return $mediaId;
+
         } catch (PDOException $e) {
             throw new Exception("Erreur de requête : " . $e->getMessage());
         }
     }
 
-    public static function updateBook(string $title, string $author, bool $available, int $pageNumber, int $id): void {
+    public static function updateBook(string $title, string $author, bool $available, int $fileId, int $pageNumber, int $id): void {
         try{
             $connexion = connection();
-            Media::updateMedia($id, $title, $author, $available);
+            Media::updateMedia($id, $title, $author, $available, $fileId);
             $query = "UPDATE " . self::TABLE . " SET pageNumber = :pageNumber WHERE id = :id";
             $stmt = $connexion->prepare($query);
             $stmt->bindValue(':pageNumber', $pageNumber, PDO::PARAM_INT);
