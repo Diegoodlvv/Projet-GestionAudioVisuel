@@ -80,8 +80,8 @@ abstract class Media{
 
     public static function getMedias(): array{
 
-        $page = $_GET['page'] ?? 1;
-        $limit = 1;
+        $page = isset($_GET['page']) > 0 ? $_GET['page'] : 1;
+        $limit = 3;
         $offset = ($page - 1) * $limit;
 
         try {
@@ -157,15 +157,45 @@ abstract class Media{
     }
 
     public static function updateAvailability(int $id, bool $available): void {
-    try {
-        $db = connection();
-        $stmt = $db->prepare("UPDATE " . self::TABLE . " SET available = :available WHERE id = :id");
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
-        $stmt->execute();
-        
-    } catch (PDOException $e) {
-        throw new Exception("Erreur de requête : " . $e->getMessage());
+        try {
+            $db = connection();
+            $stmt = $db->prepare("UPDATE " . self::TABLE . " SET available = :available WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':available', $available, PDO::PARAM_BOOL);
+            $stmt->execute();
+            
+        } catch (PDOException $e) {
+            throw new Exception("Erreur de requête : " . $e->getMessage());
+        }
     }
-}
+
+    public static function rechercherMedia($media, $search)
+    {
+        $valeur = false;
+
+        // recherche stricte 
+
+        if(str_contains(strtolower($media["title"]), strtolower($search)) || str_contains(strtolower($media["author"]), strtolower($search))){
+            $valeur = true;        
+        }
+
+        // recherche approximative sur la chaîne entière de chaque donnée 
+
+        if(levenshtein(strtolower($search), strtolower($media["title"])) <= 2 || levenshtein(strtolower($search), strtolower($media["author"])) <= 2){
+            $valeur = true;
+        }
+
+        // recherche appoximative sur chaque mot de chaque donnée 
+
+        $mots = explode(" ", $media["title"] . " " .  $media["author"]);
+
+        foreach($mots as $mot){
+            if(levenshtein(strtolower($search), strtolower($mot)) <= 2 ){
+                $valeur = true;
+            }
+        }
+        
+        return $valeur;
+
+    }
 }

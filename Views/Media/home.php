@@ -19,7 +19,11 @@ require_once 'Controllers/BookController.php';
             </p>
         </div>
 
-        
+         <form method="GET" action="" class="flex h-[50px] max-w-[1500px] mx-auto gap-2 px-4 my-12">
+            <input type="text" name="text" value="<?= $search ?>" placeholder="Rechercher un livre..." class="flex-1 px-4 rounded-lg border border-gray-300" >
+            <input type="submit" value="Rechercher" class="px-6 rounded-lg bg-blue-600 text-white cursor-pointer hover:bg-blue-700" >
+        </form>
+
 
         <div class="flex flex-col gap-6">
 
@@ -41,7 +45,7 @@ require_once 'Controllers/BookController.php';
                 </div>
 
                 <div class="space-y-4 p-5">
-                    <?php foreach ($medias as $media): ?>
+                    <?php foreach ($mediasFiltered as $media): ?>
                         <a href="index.php?action=Media/library" class="block">
                             <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-indigo-200 hover:bg-indigo-50/50">
                                 <div class="flex items-start justify-between gap-3">
@@ -80,13 +84,20 @@ require_once 'Controllers/BookController.php';
                     <?php endfor; ?>
                 <?php else : ?>
                     <?php if ($currentPage - 1 === 0 ) : ?>
-                        <a href="index.php?action=Media/home&page=<?= $currentPage ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition bg-indigo-600 text-white'">
+                        <a href="index.php?action=Media/home&page=<?= $currentPage ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition bg-indigo-600 text-white">
                             <?= $currentPage ?>
                         </a>
                         <a href="index.php?action=Media/home&page=<?= $currentPage + 1 ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition bg-slate-100 text-slate-700 hover:bg-slate-200">
                             <?= $currentPage + 1?>
                         </a>
-                    <?php else : ?>
+                    <?php elseif($currentPage == $pages) : ?>
+                        <a href="index.php?action=Media/home&page=<?= $currentPage - 1 ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            <?= $currentPage - 1 ?>
+                        </a>
+                        <a href="index.php?action=Media/home&page=<?= $currentPage ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition bg-indigo-600 text-white">
+                            <?= $currentPage ?>
+                        </a>
+                    <?php elseif($currentPage - 1 > 0 && $currentPage < $pages) : ?>
                         <a href="index.php?action=Media/home&page=<?= $currentPage - 1 ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition bg-slate-100 text-slate-700 hover:bg-slate-200">
                             <?= $currentPage - 1 ?>
                         </a>
@@ -102,7 +113,6 @@ require_once 'Controllers/BookController.php';
                 <div class="rounded-lg px-6 py-1.5 ml-5 text-sm font-medium transition bg-indigo-600 text-white">
                     <?= $pages ?> pages
                 </div>
-                
             </div>
         </div>
     </div>
